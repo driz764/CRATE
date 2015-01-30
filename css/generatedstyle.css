@@ -11,46 +11,19 @@ body {
   width: 100%;
   z-index: 10;
   padding-top: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 13px;
   background-color: black;
   color: #ececec;
   opacity: 0.85;
 }
-#networkState {
-  color: #cd2626;
+.btn-header {
+  margin-top: -12px;
 }
-.navbar-container {
-  padding-right: 0px;
-}
-.nav li {
-  display: inline-block;
-  margin-left: 0px;
-}
-.nav li a {
-  font-size: 1.125em;
-  color: #37424c;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #37424c;
-  margin: 35px 0px 0px 8px;
-  padding: 4px 25px 4px;
-  border-radius: 4px;
-}
-.nav li a:active,
-.nav li a:hover {
-  color: #ececec;
-  background-color: #37424c;
-}
-#alertGenerateOffer,
-#alertAcceptOffer,
-#alertConfirmHandshake {
+#containerLink {
   display: none;
   bottom: -10px;
   position: fixed;
   z-index: 10;
-}
-.alertNetwork {
-  margin-top: 20px;
 }
 .main {
   box-shadow: inset 1px 3px 1px -2px #ababab;
