@@ -31,34 +31,18 @@ body {
   opacity: 0.85;
 }
 
-#top-header { .header(15px, 15px, black, @light-grey) }
+#top-header { .header(15px, 13px, black, @light-grey) }
 
-#networkState { color : @red; }
-
-.navbar-container { padding-right: 0px; }
-.nav{
-  li{
-    display: inline-block;
-    margin-left:0px;
-    a{
-      font-size: @font-size*0.75; color: @medium-grey;
-      border-style:solid; border-width:1px; border-color:@medium-grey;
-      margin: 35px 0px 0px 8px;
-      padding: 4px 25px 4px;
-      border-radius: 4px;
-      &:active, &:hover { color:@light-grey; background-color: @medium-grey; }
-    }
-  }
+.btn-header{
+  margin-top:-12px;
 }
 
-#alertGenerateOffer, #alertAcceptOffer, #alertConfirmHandshake{
+#containerLink{
   display: none;
   bottom: -10px;
   position: fixed;
   z-index: 10;
 }
-
-.alertNetwork { margin-top: 20px }
 
 .main {
   box-shadow: inset 1px 3px 1px -2px #ababab;
