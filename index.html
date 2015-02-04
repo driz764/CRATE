@@ -34,24 +34,26 @@
               <!-- editor menu bar //-->
               <button type="button"
                       class="btn btn-default dropdown-toggle"
-                      aria-label="File text" data-toggle="dropdown"
-                      disabled="disabled">
+                      aria-label="File text" data-toggle="dropdown">
                 <span class="octicon octicon-file-text"></span>File
                 <span class="caret"></span>
               </button>
               <ul id="dropdowncontainerNetwork" class="dropdown-menu"
                   role="menu" aria-labelledby="networkdropdownmenu">
-                <li id="test" role="presentation">
-                  <a id="newFile">New file</a>
+                <li role="presentation">
+                  <a id="new">New</a>
                 </li>
                 <li role="presentation">
-                  <a id="openFile">Open file</a>
+                  <a id="open">
+                    <input type="file" id="openInput" tabindex="-1"/>
+                    Open
+                  </a>
                 </li>
                 <li role="presentation">
-                  <a id="saveFile">Save file</a>
+                  <a id="quickSave">Quick save</a>
                 </li>
                 <li role="presentation">
-                  <a id="deleteFile">Delete file</a>
+                  <a id="saveOnDisk">Save on disk</a>
                 </li>
               </ul>
             </div>
@@ -76,7 +78,7 @@
                   <a id="handshake">Confirm our arrival</a>
                 </li>
                 <li class="divider"></li>
-                <li role="presentation" class="disabled">
+                <li id="liDisconnect" role="presentation" class="disabled">
                   <a id="disconnect">Disconnect</a>
                 </li>
               </ul>
@@ -152,7 +154,10 @@
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js">
     </script>
-    
+    <script
+       src="./bower_components/bootstrap-filestyle/src/bootstrap-filestyle.js">
+    </script>
+       
     <script src="./bower_components/causaltrack/causaltrack.bundle.js">
     </script>
     <script> var VVwE = require("causaltrack").VVwE; </script>
@@ -171,23 +176,37 @@
     <script src="./model/document.js"></script>
     <script src="./model/signaling.js"></script>
     <script src="./model/model.js"></script>
+
+    <script src="./controller/newbuttoncontroller.js"></script>
+    <script src="./controller/openbuttoncontroller.js"></script>
+    <script src="./controller/quicksavebuttoncontroller.js"></script>
+    <script src="./controller/saveondiskbuttoncontroller.js"></script>
     
     <script src="./controller/sharebuttoncontroller.js"></script>
     <script src="./controller/launchbuttoncontroller.js"></script>
     <script src="./controller/answerbuttoncontroller.js"></script>
     <script src="./controller/handshakebuttoncontroller.js"></script>
+    <script src="./controller/disconnectbuttoncontroller.js"></script>
+    
     <script src="./controller/networkstatecontroller.js"></script>
     <script src="./controller/editorcontroller.js"></script>
-    
     <script>
       // #1 initialize the model
       var argUid = null;
       if ((document.URL.split("?")).length>1){
         argUid = document.URL.split("?")[1];
       };
-
-      var m = new Model(argUid);
+      var m = new Model(argUid, JSON.parse(localStorage.getItem("default")));
+           
       // #2 initialize the controllers
+      var cEditor = new EditorController(m, $("#editor"));
+
+      var cNew = new NewButtonController(m, $("#new"), cEditor);
+      var cOpen = new OpenButtonController(m, $("#open"), $("#openInput"),
+      cEditor); // (TODO) fix the uglyness: create a view js
+      var cQuickSave = new QuickSaveButtonController(m, $("#quickSave"));
+      var cSaveOnDisk = new SaveOnDiskButtonController(m, $("#saveOnDisk"));
+      
       var cShare = new ShareButtonController(m, $("#share"),
       $("#containerLink"), $("#alertLink"), $("#actionLink"), $("#inputLink"),
       $("#dismissLink"));
@@ -202,7 +221,8 @@
       $("#dismissLink"));
       var cNetworkState = new NetworkStateController(m, $("#networkState"),
       $("#abbrNetworkState"));
-      var cEditor = new EditorController(m, $("#editor"));
+      var cDisconnect = new DisconnectButtonController(m, $("#disconnect"),
+      $("#liDisconnect"));
 
       
       // #3 if argument has been passed launch a connection through signaling
@@ -212,8 +232,6 @@
       
     </script>
  
-
-
     
   </body>
 </html>
