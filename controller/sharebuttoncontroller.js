@@ -4,34 +4,33 @@
  * to a document
  * \param model the model of the application
  * \param shareBtn the button that share the access to a document
- * \param container the container of the links
- * \param alert the alert division containing the output
- * \param action the action button associated with the link
- * \param input the input field where the link appears
- * \param dismiss the button that closes the window
+ * \param signalingView the view corresponding to the signaling awareness
+ * \param linkView the view displaying the link generated
  */
-function ShareButtonController(model, shareBtn, container, alert, action,
-                               input, dismiss){
+function ShareButtonController(model, shareBtn,
+                               signalingView, linkView){
     shareBtn.click(
         function(){
+            var socket, action, client, self;
             // #0 create the proper call to the server
-            var address = model.signaling.startSharing();
-            // #1 modify the view
-            container.show();
-            alert.removeClass("alert-info").addClass("alert-warning");
-            action.html('<span class="octicon octicon-clippy"></span> Copy');
-            action.attr("aria-label", "Copy to clipboard");
-            input.attr("readonly","readonly");
-            input.val(address);
-            dismiss.unbind("click").click(function(){container.hide();});
-            var client = new ZeroClipboard(action);
-            client.on("ready", function(event){
-                client.on( "copy", function( event ){
-                    var clipboard = event.clipboardData;
-                    clipboard.setData( "text/plain",
-                                       input.val() );
+            socket = model.signaling.startSharing();
+            socket.on("connect", function(){
+                signalingView.pending();
+            });            
+            // #1 modify the view            
+            if (model.signaling.startedSocket){
+                action = linkView.printLink(model.signaling.address+
+                                            "index.html?"+
+                                            model.signaling.uid);
+                client = new ZeroClipboard(action);
+                client.on("ready", function(event){
+                    client.on( "copy", function( event ){
+                        var clipboard = event.clipboardData;
+                        clipboard.setData( "text/plain",
+                                           linkView.input.val() );
+                    });
                 });
-            });
+            };
         }
     );
 };
