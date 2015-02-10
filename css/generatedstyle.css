@@ -16,8 +16,8 @@ body {
   color: #ececec;
   opacity: 0.85;
 }
-#abbrNetworkState {
-  border-bottom-width: 0;
+.header-state {
+  margin-right: 10px;
 }
 .btn-header {
   margin-top: -12px;
